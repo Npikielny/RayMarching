@@ -24,11 +24,17 @@ struct ContentView: View {
     
 //    static let texture = Texture("/Users/noahpikielny/Desktop/blobs.jpg")
     
+    let angle: UnsafeMutablePointer<Float>
+    
     init() {
         let intermediate = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 500, height: 500, storageMode: .private, usage: [.shaderRead, .shaderWrite])
         
+        let ptr = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+        angle = ptr
 //        Self.texture.emptyCopy(usage: [.shaderRead, .shaderWrite])
         
+        let angle = Float.random(in: 0...Float.pi*2)
+        ptr.pointee = angle
         operation = RenderOperation(presents: true) {
             ComputePass(
                 texture: intermediate,
@@ -36,6 +42,7 @@ struct ContentView: View {
                     try! ComputeShader(
                         name: "rayMarch2D",
                         textures: [intermediate],
+                        buffers: [Buffer(constantPointer: ptr, count: 1)],
                         threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
                     )
                 ]
@@ -54,7 +61,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        view.onReceive(timer) { _ in draw() }
+        view.onReceive(timer) { _ in draw(); angle.pointee += 0.1 }
     }
     
     func draw() {
