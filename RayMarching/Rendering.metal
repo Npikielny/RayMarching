@@ -155,32 +155,38 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
         return;
     }
     
-//    int maxIteration = 10;
+    //    int maxIteration = 10;
     
     if (getDistance(float2(tid), circle) <= 0) {
         out.write(float4(1,0,0,1), tid);
         return;
     }
     
-    float distance = getDistance(cameraPosition, circle);
-    Circle step;
-    step.position = cameraPosition;
-    step.radius = distance;
-    
-    if (getDistance(float2(tid), step) <= 0 && getDistance(float2(tid), step) >= -1) {
-        out.write(float4(0,0,1,1), tid);
-        return;
+    for (int i = 0; i < 5; i++) {
+        float cameraToCircle = getDistance(cameraPosition, circle);
+        Circle step;
+        step.position = cameraPosition;
+        step.radius = cameraToCircle;
+        
+        if (getDistance(float2(tid), step) <= 0 && getDistance(float2(tid), step) >= -1) {
+            out.write(float4(0,0,1,1), tid);
+            return;
+        }
+        
+        float2 marchDirection = float2(-0.6,-1);
+        
+        cameraPosition = cameraPosition + normalize(marchDirection) * step.radius;
+        float newDist = distance(float2(tid), cameraPosition);
+        if (newDist < 4) {
+            out.write(float4(1), tid);
+            return;
+        }
     }
     
-    float2 marchDirection = float2(-1,0.8);
-    
-    if (getDistance(float2(tid), step) <= 0 && getDistance(float2(tid), step) >= -1) {
-        out.write(float4(0,0,1,1), tid);
-        return;
-    }
-    
-    
-    
+//    if (getDistance(float2(tid), newStep) <= 0 && getDistance(float2(tid), newStep) >= -1) {
+//        out.write(float4(0,0,1,1), tid);
+//        return;
+//    }
     
 //    while (maxIteration > 0) {
 //        getIntersection(cameraPosition, circle);
