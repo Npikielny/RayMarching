@@ -123,17 +123,73 @@ struct Sphere {
     float3 color;
 };
 
+struct Square {
+    float3 position;
+};
+
+struct Circle {
+    float2 position;
+    float radius;
+};
+
+float getDistance(float2 position, Circle circle) {
+    return length(circle.position - position) - circle.radius;
+};
+
 [[kernel]]
 void rayMarch2D(uint2 tid [[thread_position_in_grid]],
                 texture2d<float, access::write> out) {
     
     float2 cameraPosition = float2(float(out.get_width()) / 2, float(out.get_height()) / 2);
+    
+    float2 circlePosition = float2(float(out.get_width()) / 4, float(out.get_height()) / 4);
+    float circleRadius = 20;
+    
+    Circle circle;
+    circle.position = circlePosition;
+    circle.radius = circleRadius;
+    
     float dist = distance(float2(tid), cameraPosition);
     if (dist < 4) {
         out.write(float4(1), tid);
-    } else {
-        out.write(float4(0), tid);
+        return;
     }
+    
+//    int maxIteration = 10;
+    
+    if (getDistance(float2(tid), circle) <= 0) {
+        out.write(float4(1,0,0,1), tid);
+        return;
+    }
+    
+    float distance = getDistance(cameraPosition, circle);
+    Circle step;
+    step.position = cameraPosition;
+    step.radius = distance;
+    
+    if (getDistance(float2(tid), step) <= 0 && getDistance(float2(tid), step) >= -1) {
+        out.write(float4(0,0,1,1), tid);
+        return;
+    }
+    
+    float2 marchDirection = float2(-1,0.8);
+    
+    if (getDistance(float2(tid), step) <= 0 && getDistance(float2(tid), step) >= -1) {
+        out.write(float4(0,0,1,1), tid);
+        return;
+    }
+    
+    
+    
+    
+//    while (maxIteration > 0) {
+//        getIntersection(cameraPosition, circle);
+//        maxIteration--;
+//    }
+    
+//    else {
+//        out.write(float4(0), tid);
+//    }
     
 //
 //    Sphere sphere;

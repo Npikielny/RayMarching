@@ -22,10 +22,12 @@ struct ContentView: View {
     
     let operation: PresentingOperation
     
-    static let texture = Texture("/Users/noahpikielny/Desktop/blobs.jpg")
+//    static let texture = Texture("/Users/noahpikielny/Desktop/blobs.jpg")
     
     init() {
-        let intermediate = Self.texture.emptyCopy(usage: [.shaderRead, .shaderWrite])
+        let intermediate = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 500, height: 500, storageMode: .private, usage: [.shaderRead, .shaderWrite])
+        
+//        Self.texture.emptyCopy(usage: [.shaderRead, .shaderWrite])
         
         operation = RenderOperation(presents: true) {
             ComputePass(
