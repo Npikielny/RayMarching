@@ -14,6 +14,8 @@
 		30D1F632291591EB00E02064 /* RayMarchingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F631291591EB00E02064 /* RayMarchingTests.swift */; };
 		30D1F63C291591EB00E02064 /* RayMarchingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F63B291591EB00E02064 /* RayMarchingUITests.swift */; };
 		30D1F63E291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F63D291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift */; };
+		30D1F64C2915922200E02064 /* ShaderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 30D1F64B2915922200E02064 /* ShaderKit */; };
+		30D1F64E2915932F00E02064 /* Rendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F64D2915932E00E02064 /* Rendering.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,7 @@
 		30D1F637291591EB00E02064 /* RayMarchingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RayMarchingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D1F63B291591EB00E02064 /* RayMarchingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingUITests.swift; sourceTree = "<group>"; };
 		30D1F63D291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		30D1F64D2915932E00E02064 /* Rendering.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Rendering.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30D1F64C2915922200E02064 /* ShaderKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +101,7 @@
 			children = (
 				30D1F61F291591E900E02064 /* RayMarchingApp.swift */,
 				30D1F621291591E900E02064 /* ContentView.swift */,
+				30D1F64D2915932E00E02064 /* Rendering.metal */,
 				30D1F623291591EB00E02064 /* Assets.xcassets */,
 				30D1F625291591EB00E02064 /* RayMarching.entitlements */,
 				30D1F626291591EB00E02064 /* Preview Content */,
@@ -145,6 +150,9 @@
 			dependencies = (
 			);
 			name = RayMarching;
+			packageProductDependencies = (
+				30D1F64B2915922200E02064 /* ShaderKit */,
+			);
 			productName = RayMarching;
 			productReference = 30D1F61C291591E900E02064 /* RayMarching.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +225,9 @@
 				Base,
 			);
 			mainGroup = 30D1F613291591E900E02064;
+			packageReferences = (
+				30D1F64A2915922200E02064 /* XCRemoteSwiftPackageReference "ShaderKit" */,
+			);
 			productRefGroup = 30D1F61D291591E900E02064 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -261,6 +272,7 @@
 			files = (
 				30D1F622291591E900E02064 /* ContentView.swift in Sources */,
 				30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */,
+				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +624,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		30D1F64A2915922200E02064 /* XCRemoteSwiftPackageReference "ShaderKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Npikielny/ShaderKit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		30D1F64B2915922200E02064 /* ShaderKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30D1F64A2915922200E02064 /* XCRemoteSwiftPackageReference "ShaderKit" */;
+			productName = ShaderKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30D1F614291591E900E02064 /* Project object */;
 }
