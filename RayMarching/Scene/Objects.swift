@@ -58,4 +58,16 @@ extension Float3 {
         
         return Float3(values[0], values[1], values[2])
     }
+    
+    static func randomDirection() -> Float3 {
+        let x1 = Float.random(in: 0...1)
+        let x2 = Float.random(in: 0...1)
+        
+        let phi = x1 * Float.pi * 2;
+        let theta = acos(1 - 2 * x2);
+            return Float3(
+                cos(phi) * sin(theta),
+                sin(phi) * sin(theta),
+                cos(theta))
+    }
 }

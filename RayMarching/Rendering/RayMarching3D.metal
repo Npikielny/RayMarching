@@ -39,7 +39,8 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
             float3 lightDirection = -normalize(float3(1));
             float3 normal = normalize(ray.origin - sdf.object.position);
             float cosTheta = dot(normal, lightDirection);
-            out.write(float4(cosTheta * materials[sdf.object.material].diffuse, 1), tid);
+            float ambience = (1 - float(i) / float(maxIterations)) * 0.25;
+            out.write(float4((ambience + cosTheta) * materials[sdf.object.material].diffuse, 1), tid);
             return;
         }
         ray.origin += ray.direction * sdf.distance;

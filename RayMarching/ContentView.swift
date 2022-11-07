@@ -5,6 +5,7 @@
 //  Created by Noah Pikielny on 11/4/22.
 //
 
+import SceneKit
 import ShaderKit
 import SwiftUI
 
@@ -12,60 +13,39 @@ struct ContentView: View {
     static let device = MTLCreateSystemDefaultDevice()
     static let commandQueue = device?.makeCommandQueue()
     
-    let view = MTKViewRepresentable(
-        frame: CGRect(x: 0, y: 0, width: 512, height: 512),
-        device: device,
-        pixelFormat: .bgra8Unorm
-    )
+    @State var screen: Screens? = nil
     
-    let timer = Timer.publish(every: 1 / 60, on: .main, in: .default).autoconnect()
-    
-    let operation: PresentingOperation
-    
-    let angle: UnsafeMutablePointer<Float>
-    
-    init() {
-        let intermediate = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 500, height: 500, storageMode: .private, usage: [.shaderRead, .shaderWrite])
-        
-        let ptr = UnsafeMutablePointer<Float>.allocate(capacity: 1)
-        angle = ptr
-//        let computePass = ContentView.operation2D(texture: intermediate, angle: ptr)
-        let computePass = ContentView.operation3D(texture: intermediate, count: 30)
-        
-        operation = RenderOperation(presents: true) {
-            computePass
-            
-            try! RenderShader(
-                pipeline: RenderFunction(
-                    vertex: "imageVert",
-                    fragment: "copyToDrawable",
-                    destination: intermediate
-                ),
-                fragmentTextures: [intermediate],
-                renderPassDescriptor: RenderPassDescriptor.drawable
-            )
-        }
+    enum Screens: String, CaseIterable {
+        case rayMarch2D = "2D Illustration of Ray Marching"
+        case rayMarch3D = "3D Ray Marching"
+        case renderingEngine = "Rendering Environment"
     }
+    
     
     var body: some View {
-        view.onReceive(timer) { _ in draw(); angle.pointee += 0.1 }
+        switch screen {
+            case .some(.rayMarch2D):
+                embed(RayMarch2D(commandQueue: Self.commandQueue))
+            case .some(.rayMarch3D):
+                embed(RayMarch3D(commandQueue: Self.commandQueue))
+            default:
+                VStack {
+                    Text("Renderers")
+                    List(Screens.allCases, id: \.rawValue) { screen in
+                        Button(screen.rawValue) {
+                            self.screen = screen
+                        }
+                    }
+                }
+                .padding()
+        }
     }
     
-    func draw() {
-        guard let commandQueue = Self.commandQueue,
-              let drawable = view.currentDrawable,
-              let descriptor = view.currentRenderPassDescriptor else {
-            print("exiting")
-            return
-        }
-        
-        Task {
-            try await commandQueue.execute(
-                renderBuffer: operation,
-                library: nil,
-                renderDescriptor: descriptor,
-                drawable: drawable
-            )
+    func embed(_ view: some View) -> some View {
+        ZStack(alignment: .topLeading) {
+            view
+            Button("Back") { screen = nil }
+                .padding()
         }
     }
 }
@@ -73,5 +53,19 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+extension RenderShader {
+    static func `default`(texture: Texture) -> RenderShader {
+        return try! RenderShader(
+            pipeline: RenderFunction(
+                vertex: "imageVert",
+                fragment: "copyToDrawable",
+                destination: texture
+            ),
+            fragmentTextures: [texture],
+            renderPassDescriptor: RenderPassDescriptor.drawable
+        )
     }
 }
