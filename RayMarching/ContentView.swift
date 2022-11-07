@@ -22,24 +22,13 @@ struct ContentView: View {
     
     let operation: PresentingOperation
     
-//    static let texture = Texture("/Users/noahpikielny/Desktop/blobs.jpg")
-    
     init() {
         let intermediate = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 500, height: 500, storageMode: .private, usage: [.shaderRead, .shaderWrite])
         
-//        Self.texture.emptyCopy(usage: [.shaderRead, .shaderWrite])
+        let computePass = ContentView.operation2D(texture: intermediate)
         
         operation = RenderOperation(presents: true) {
-            ComputePass(
-                texture: intermediate,
-                pipelines: [
-                    try! ComputeShader(
-                        name: "rayMarch2D",
-                        textures: [intermediate],
-                        threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
-                    )
-                ]
-            )
+            computePass
             
             try! RenderShader(
                 pipeline: RenderFunction(

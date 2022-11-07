@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3061354B29197618000378D8 /* Operation2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3061354A29197618000378D8 /* Operation2D.swift */; };
 		30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F61F291591E900E02064 /* RayMarchingApp.swift */; };
 		30D1F622291591E900E02064 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F621291591E900E02064 /* ContentView.swift */; };
 		30D1F624291591EB00E02064 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D1F623291591EB00E02064 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3061354A29197618000378D8 /* Operation2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation2D.swift; sourceTree = "<group>"; };
 		30D1F61C291591E900E02064 /* RayMarching.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RayMarching.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D1F61F291591E900E02064 /* RayMarchingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingApp.swift; sourceTree = "<group>"; };
 		30D1F621291591E900E02064 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				30D1F61F291591E900E02064 /* RayMarchingApp.swift */,
 				30D1F621291591E900E02064 /* ContentView.swift */,
+				3061354A29197618000378D8 /* Operation2D.swift */,
 				30D1F64D2915932E00E02064 /* Rendering.metal */,
 				30D1F623291591EB00E02064 /* Assets.xcassets */,
 				30D1F625291591EB00E02064 /* RayMarching.entitlements */,
@@ -273,6 +276,7 @@
 				30D1F622291591E900E02064 /* ContentView.swift in Sources */,
 				30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */,
 				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
+				3061354B29197618000378D8 /* Operation2D.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,7 +431,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RayMarching/Preview Content\"";
-				DEVELOPMENT_TEAM = JTKRBY67XM;
+				DEVELOPMENT_TEAM = 597PF7552F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -465,7 +469,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RayMarching/Preview Content\"";
-				DEVELOPMENT_TEAM = JTKRBY67XM;
+				DEVELOPMENT_TEAM = 597PF7552F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
