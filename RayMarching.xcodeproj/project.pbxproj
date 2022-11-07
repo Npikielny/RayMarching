@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3061354B29197618000378D8 /* Operation2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3061354A29197618000378D8 /* Operation2D.swift */; };
+		30C24BF62919784700082561 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF02919784700082561 /* Scene.swift */; };
+		30C24BF72919784700082561 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF12919784700082561 /* Camera.swift */; };
+		30C24BF82919784700082561 /* RayMarching3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF32919784700082561 /* RayMarching3D.metal */; };
+		30C24BF92919784700082561 /* Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF42919784700082561 /* Objects.swift */; };
+		30C24BFA2919784700082561 /* RayMarching3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF52919784700082561 /* RayMarching3D.swift */; };
 		30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F61F291591E900E02064 /* RayMarchingApp.swift */; };
 		30D1F622291591E900E02064 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F621291591E900E02064 /* ContentView.swift */; };
 		30D1F624291591EB00E02064 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30D1F623291591EB00E02064 /* Assets.xcassets */; };
@@ -38,6 +43,12 @@
 
 /* Begin PBXFileReference section */
 		3061354A29197618000378D8 /* Operation2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation2D.swift; sourceTree = "<group>"; };
+		30C24BF02919784700082561 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		30C24BF12919784700082561 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		30C24BF22919784700082561 /* SDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDF.h; sourceTree = "<group>"; };
+		30C24BF32919784700082561 /* RayMarching3D.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RayMarching3D.metal; sourceTree = "<group>"; };
+		30C24BF42919784700082561 /* Objects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Objects.swift; sourceTree = "<group>"; };
+		30C24BF52919784700082561 /* RayMarching3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RayMarching3D.swift; sourceTree = "<group>"; };
 		30D1F61C291591E900E02064 /* RayMarching.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RayMarching.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D1F61F291591E900E02064 /* RayMarchingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingApp.swift; sourceTree = "<group>"; };
 		30D1F621291591E900E02064 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +116,12 @@
 				30D1F621291591E900E02064 /* ContentView.swift */,
 				3061354A29197618000378D8 /* Operation2D.swift */,
 				30D1F64D2915932E00E02064 /* Rendering.metal */,
+				30C24BF12919784700082561 /* Camera.swift */,
+				30C24BF32919784700082561 /* RayMarching3D.metal */,
+				30C24BF52919784700082561 /* RayMarching3D.swift */,
+				30C24BF02919784700082561 /* Scene.swift */,
+				30C24BF42919784700082561 /* Objects.swift */,
+				30C24BF22919784700082561 /* SDF.h */,
 				30D1F623291591EB00E02064 /* Assets.xcassets */,
 				30D1F625291591EB00E02064 /* RayMarching.entitlements */,
 				30D1F626291591EB00E02064 /* Preview Content */,
@@ -275,8 +292,13 @@
 			files = (
 				30D1F622291591E900E02064 /* ContentView.swift in Sources */,
 				30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */,
+				30C24BF92919784700082561 /* Objects.swift in Sources */,
+				30C24BF72919784700082561 /* Camera.swift in Sources */,
+				30C24BF62919784700082561 /* Scene.swift in Sources */,
+				30C24BF82919784700082561 /* RayMarching3D.metal in Sources */,
 				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
 				3061354B29197618000378D8 /* Operation2D.swift in Sources */,
+				30C24BFA2919784700082561 /* RayMarching3D.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

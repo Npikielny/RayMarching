@@ -29,21 +29,11 @@ struct ContentView: View {
         
         let ptr = UnsafeMutablePointer<Float>.allocate(capacity: 1)
         angle = ptr
-        let computePass = ContentView.operation2D(texture: intermediate, angle: ptr)
+//        let computePass = ContentView.operation2D(texture: intermediate, angle: ptr)
+        let computePass = ContentView.operation3D(texture: intermediate, count: 30)
         
         operation = RenderOperation(presents: true) {
             computePass
-            ComputePass(
-                texture: intermediate,
-                pipelines: [
-                    try! ComputeShader(
-                        name: "rayMarch2D",
-                        textures: [intermediate],
-                        buffers: [Buffer(constantPointer: ptr, count: 1)],
-                        threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
-                    )
-                ]
-            )
             
             try! RenderShader(
                 pipeline: RenderFunction(
