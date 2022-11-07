@@ -138,6 +138,7 @@ float getDistance(float2 position, Circle circle) {
 
 [[kernel]]
 void rayMarch2D(uint2 tid [[thread_position_in_grid]],
+                constant float & angle,
                 texture2d<float, access::write> out) {
     
     float2 cameraPosition = float2(float(out.get_width()) / 2, float(out.get_height()) / 2);
@@ -162,6 +163,8 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
         return;
     }
     
+    float2 marchDirection = float2(cos(angle), sin(angle));
+    
     for (int i = 0; i < 5; i++) {
         float cameraToCircle = getDistance(cameraPosition, circle);
         Circle step;
@@ -173,8 +176,6 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
             return;
         }
         
-        float2 marchDirection = float2(-0.6,-1);
-        
         cameraPosition = cameraPosition + normalize(marchDirection) * step.radius;
         float newDist = distance(float2(tid), cameraPosition);
         if (newDist < 4) {
@@ -182,6 +183,7 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
             return;
         }
     }
+    out.write(float4(float3(0), 1), tid);
     
 //    if (getDistance(float2(tid), newStep) <= 0 && getDistance(float2(tid), newStep) >= -1) {
 //        out.write(float4(0,0,1,1), tid);

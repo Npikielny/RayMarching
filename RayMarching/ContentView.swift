@@ -22,13 +22,28 @@ struct ContentView: View {
     
     let operation: PresentingOperation
     
+    let angle: UnsafeMutablePointer<Float>
+    
     init() {
         let intermediate = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 500, height: 500, storageMode: .private, usage: [.shaderRead, .shaderWrite])
         
-        let computePass = ContentView.operation2D(texture: intermediate)
+        let ptr = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+        angle = ptr
+        let computePass = ContentView.operation2D(texture: intermediate, angle: ptr)
         
         operation = RenderOperation(presents: true) {
             computePass
+            ComputePass(
+                texture: intermediate,
+                pipelines: [
+                    try! ComputeShader(
+                        name: "rayMarch2D",
+                        textures: [intermediate],
+                        buffers: [Buffer(constantPointer: ptr, count: 1)],
+                        threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
+                    )
+                ]
+            )
             
             try! RenderShader(
                 pipeline: RenderFunction(
@@ -43,7 +58,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        view.onReceive(timer) { _ in draw() }
+        view.onReceive(timer) { _ in draw(); angle.pointee += 0.1 }
     }
     
     func draw() {
