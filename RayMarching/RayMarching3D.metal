@@ -31,8 +31,10 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
     float2 uv = float2(tid) / float2(out.get_width(), out.get_height());
     Ray ray = createCameraRay(uv, modelMatrix, projection);
     
-    for (int i = 0; i < 20; i ++) {
-        SDFRecord sdf = sceneDistance(objects, 10, ray);
+    int maxDistance = 100;
+    int maxIterations = 40;
+    for (int i = 0; i < maxIterations; i ++) {
+        SDFRecord sdf = sceneDistance(objects, objectCount, ray);
         if (sdf.distance < 0.1) {
             float3 lightDirection = -normalize(float3(1));
             float3 normal = normalize(ray.origin - sdf.object.position);
@@ -41,6 +43,10 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
             return;
         }
         ray.origin += ray.direction * sdf.distance;
+        if (sdf.distance >= maxDistance) {
+            out.write(float4(float3(float(i)/float(maxIterations)), 1), tid);
+            return;
+        }
     }
     out.write(float4(float3(0), 1), tid);
     return;

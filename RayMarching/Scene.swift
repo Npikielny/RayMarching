@@ -19,7 +19,7 @@ struct Scene3D {
         
         let objects = (0..<objectCount)
             .map { i in
-                Object(type: .sphere, position: Float3.random() * 20 + Float3(0, 0, 35), rotation: Float3(0, 0, 0), scale: Float3(1, 1, 1), material: Int32(i % materialCount))
+                Object(type: .sphere, position: Float3.random() * 20 + Float3(0, 0, 15), rotation: Float3(0, 0, 0), scale: Float3(1, 1, 1), material: Int32(i % materialCount))
             }
         
         return Self(materials: materials, objects: objects)
