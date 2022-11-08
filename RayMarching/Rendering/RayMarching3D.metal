@@ -17,14 +17,9 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
                 constant Object * objects,
                 constant int & objectCount,
                 constant Material * materials,
+                constant int & maxIterations,
                 texture2d<float, access::write> out) {
     
-//    float4x4 projection = {
-//        1, 0, 0, 0,
-//        0, 1, 0, 0,
-//        0, 0, 1, 0,
-//        0, 0, 0, 1
-//    };
     float4x4 modelMatrix = matrices[0];
     float4x4 projection = matrices[1];
     
@@ -32,15 +27,23 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
     Ray ray = createCameraRay(uv, modelMatrix, projection);
     
     int maxDistance = 100;
-    int maxIterations = 40;
     for (int i = 0; i < maxIterations; i ++) {
         SDFRecord sdf = sceneDistance(objects, objectCount, ray);
-        if (sdf.distance < 0.1) {
-            float3 lightDirection = -normalize(float3(1));
-            float3 normal = normalize(ray.origin - sdf.object.position);
-            float cosTheta = dot(normal, lightDirection);
-            float ambience = (1 - float(i) / float(maxIterations)) * 0.25;
-            out.write(float4((ambience + cosTheta) * materials[sdf.object.material].diffuse, 1), tid);
+        if (sdf.distance < 0.001) {
+//            float3 lightDirection = -normalize(float3(1));
+//
+//            float3 normal = { 0, 1, 0 };
+//            if (sdf.object.type == SPHERE) {
+//                normal = normalize(ray.origin - sdf.object.position);
+//            } else if (sdf.object.type == PLANE) {
+//                normal = normal;
+////                out.write(float4(1, 0, 0, 1), tid);
+////                return;
+//            }
+//            float cosTheta = dot(normal, lightDirection);
+//            float ambience = (1 - float(i) / float(maxIterations)) * 0.25;
+//            out.write(float4((ambience + cosTheta) * materials[sdf.object.material].diffuse, 1), tid);
+            out.write(float4(materials[sdf.object.material].diffuse, 1), tid);
             return;
         }
         ray.origin += ray.direction * sdf.distance;

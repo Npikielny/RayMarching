@@ -28,6 +28,8 @@ struct ContentView: View {
                 embed(RayMarch2D(commandQueue: Self.commandQueue))
             case .some(.rayMarch3D):
                 embed(RayMarch3D(commandQueue: Self.commandQueue))
+            case .some(.renderingEngine):
+                embed(RenderingEngine(commandQueue: Self.commandQueue))
             default:
                 VStack {
                     Text("Renderers")

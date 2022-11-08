@@ -19,9 +19,21 @@ struct Scene3D {
         
         let objects = (0..<objectCount)
             .map { i in
-                Object(type: .sphere, position: Float3.randomDirection() * Float.random(in: 3...20), rotation: Float3(0, 0, 0), scale: Float3(1, 1, 1), material: Int32(i % materialCount))
-            }
+                if Int.random(in: 0...1) == 0 {
+                    return Object(type: .sphere, position: Float3.randomDirection() * Float.random(in: 10...30), rotation: Float3(0, 0, 0), scale: Float3(repeating: Float.random(in: 0.5...3)), material: Int32(i % materialCount))
+                } else {
+                    return Object(type: .box, position: Float3.randomDirection() * Float.random(in: 10...30), rotation: Float3(0, 0, 0), scale: Float3.random(in: 1...4), material: Int32(i % materialCount))
+                }
+            } //+ [Object.plane(position: Float3.zero, rotation: Float3.zero, scale: Float3.zero, material: 0)]
         
         return Self(materials: materials, objects: objects)
+    }
+    
+    static func testingScene() -> Self {
+        let material = Material.random()
+        
+        let object = Object.box(position: Float3(0, 0, 10), rotation: Float3.zero, scale: Float3(3, 4, 1), material: 0)
+        
+        return Self(materials: [material], objects: [object])
     }
 }

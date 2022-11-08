@@ -18,6 +18,7 @@ struct RayMarch3D: BasicScreen {
     var operation: ShaderKit.PresentingOperation
     
     @State var camera: Camera
+    @State var cachedRotation: Float3
     let matrices: UnsafeMutablePointer<float4x4>
     
     init(commandQueue: MTLCommandQueue?) {
@@ -29,7 +30,8 @@ struct RayMarch3D: BasicScreen {
         
         let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .private, usage: [.shaderRead, .shaderWrite])
         
-        let camera = Camera(position: Float3(0, 0, 0), rotation: Float3(0, 0, 0))
+        let camera = Camera()
+        self._cachedRotation = State(initialValue: camera.rotation)
         self._camera = State(initialValue: camera)
         let matricesPtr = UnsafeMutablePointer<float4x4>.allocate(capacity: 2)
         matrices = matricesPtr
@@ -50,6 +52,7 @@ struct RayMarch3D: BasicScreen {
                             Buffer(mutable: scene.objects),
                             Buffer(constant: scene.objects.count),
                             Buffer(mutable: scene.materials),
+                            Buffer(constant: 100)
                         ],
                         threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
                     )
@@ -60,7 +63,41 @@ struct RayMarch3D: BasicScreen {
         }
     }
     
+    
+    
     var contents: some View {
-        view
+        GeometryReader { geometry in
+            view
+                .gesture(
+                    DragGesture(
+                        coordinateSpace: CoordinateSpace.local
+                    ).onChanged { gesture in
+                        cachedRotation = Float3(
+                            Float(gesture.translation.height / geometry.size.height),
+                            Float(gesture.translation.width / geometry.size.width),
+                            0
+                        )
+                    }.onEnded { gesture in
+                        camera.rotation += Float3(
+                            Float(gesture.translation.height / geometry.size.height),
+                            Float(gesture.translation.width / geometry.size.width),
+                            0
+                        )
+                        cachedRotation = Float3.zero
+                    }
+                )
+        }
+    }
+    
+    func mutateState(publisher: Publisher.Output) {
+        print(camera.rotation + cachedRotation)
+        matrices.successor().pointee = camera.makeProjectionMatrix(with: cachedRotation)
+    }
+}
+
+
+struct RayMarch3D_Previews: PreviewProvider {
+    static var previews: some View {
+        RayMarch3D(commandQueue: MTLCreateSystemDefaultDevice()?.makeCommandQueue())
     }
 }

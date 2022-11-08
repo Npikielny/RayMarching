@@ -10,6 +10,7 @@
 		30A3BE602919BED400092548 /* RayMarch2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE5F2919BED400092548 /* RayMarch2D.swift */; };
 		30A3BE622919BEDD00092548 /* RayMarch3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE612919BEDD00092548 /* RayMarch3D.swift */; };
 		30A3BE642919BEE900092548 /* BasicScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE632919BEE900092548 /* BasicScreen.swift */; };
+		30A3BE662919F78500092548 /* RenderingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE652919F78500092548 /* RenderingEngine.swift */; };
 		30C24BF62919784700082561 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF02919784700082561 /* Scene.swift */; };
 		30C24BF72919784700082561 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF12919784700082561 /* Camera.swift */; };
 		30C24BF82919784700082561 /* RayMarching3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30C24BF32919784700082561 /* RayMarching3D.metal */; };
@@ -46,6 +47,7 @@
 		30A3BE5F2919BED400092548 /* RayMarch2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarch2D.swift; sourceTree = "<group>"; };
 		30A3BE612919BEDD00092548 /* RayMarch3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarch3D.swift; sourceTree = "<group>"; };
 		30A3BE632919BEE900092548 /* BasicScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicScreen.swift; sourceTree = "<group>"; };
+		30A3BE652919F78500092548 /* RenderingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingEngine.swift; sourceTree = "<group>"; };
 		30C24BF02919784700082561 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		30C24BF12919784700082561 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		30C24BF22919784700082561 /* SDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDF.h; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				30A3BE5F2919BED400092548 /* RayMarch2D.swift */,
 				30A3BE612919BEDD00092548 /* RayMarch3D.swift */,
 				30A3BE632919BEE900092548 /* BasicScreen.swift */,
+				30A3BE652919F78500092548 /* RenderingEngine.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 			files = (
 				30D1F622291591E900E02064 /* ContentView.swift in Sources */,
 				30D1F620291591E900E02064 /* RayMarchingApp.swift in Sources */,
+				30A3BE662919F78500092548 /* RenderingEngine.swift in Sources */,
 				30C24BF92919784700082561 /* Objects.swift in Sources */,
 				30C24BF72919784700082561 /* Camera.swift in Sources */,
 				30A3BE622919BEDD00092548 /* RayMarch3D.swift in Sources */,
