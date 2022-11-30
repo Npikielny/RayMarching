@@ -7,26 +7,12 @@
 
 #include <metal_stdlib>
 using namespace metal;
-
-constant float2 verts[] = {
-    float2(-1, -1),
-    float2(1, -1),
-    float2(1, 1),
-    
-    float2(-1, -1),
-    float2(1, 1),
-    float2(-1, 1)
-};
+#include "Shared.h"
 
 enum Eye {
     left,
     right,
     none
-};
-
-struct Vert {
-    float4 position [[position]];
-    float2 uv;
 };
 
 float2 flipUV(float2 in) {

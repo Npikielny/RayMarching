@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30187F43293406C800E5A189 /* SDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30187F42293406C800E5A189 /* SDF.metal */; };
+		3031F9B8293563400090E5A7 /* Shared.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3031F9B7293563400090E5A7 /* Shared.metal */; };
+		304FE150293401ED00698BFC /* RenderingEngine.metal in Sources */ = {isa = PBXBuildFile; fileRef = 304FE14F293401ED00698BFC /* RenderingEngine.metal */; };
 		30A3BE602919BED400092548 /* RayMarch2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE5F2919BED400092548 /* RayMarch2D.swift */; };
 		30A3BE622919BEDD00092548 /* RayMarch3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE612919BEDD00092548 /* RayMarch3D.swift */; };
 		30A3BE642919BEE900092548 /* BasicScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A3BE632919BEE900092548 /* BasicScreen.swift */; };
@@ -44,6 +47,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		30187F41293405D100E5A189 /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
+		30187F42293406C800E5A189 /* SDF.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SDF.metal; sourceTree = "<group>"; };
+		3031F9B7293563400090E5A7 /* Shared.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shared.metal; sourceTree = "<group>"; };
+		304FE14F293401ED00698BFC /* RenderingEngine.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = RenderingEngine.metal; sourceTree = "<group>"; };
 		30A3BE5F2919BED400092548 /* RayMarch2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarch2D.swift; sourceTree = "<group>"; };
 		30A3BE612919BEDD00092548 /* RayMarch3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarch3D.swift; sourceTree = "<group>"; };
 		30A3BE632919BEE900092548 /* BasicScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicScreen.swift; sourceTree = "<group>"; };
@@ -106,8 +113,12 @@
 			isa = PBXGroup;
 			children = (
 				30D1F64D2915932E00E02064 /* Rendering.metal */,
+				30187F41293405D100E5A189 /* Shared.h */,
+				3031F9B7293563400090E5A7 /* Shared.metal */,
+				304FE14F293401ED00698BFC /* RenderingEngine.metal */,
 				30C24BF32919784700082561 /* RayMarching3D.metal */,
 				30C24BF22919784700082561 /* SDF.h */,
+				30187F42293406C800E5A189 /* SDF.metal */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -325,11 +336,14 @@
 				30A3BE662919F78500092548 /* RenderingEngine.swift in Sources */,
 				30C24BF92919784700082561 /* Objects.swift in Sources */,
 				30C24BF72919784700082561 /* Camera.swift in Sources */,
+				30187F43293406C800E5A189 /* SDF.metal in Sources */,
 				30A3BE622919BEDD00092548 /* RayMarch3D.swift in Sources */,
 				30C24BF62919784700082561 /* Scene.swift in Sources */,
 				30C24BF82919784700082561 /* RayMarching3D.metal in Sources */,
 				30A3BE602919BED400092548 /* RayMarch2D.swift in Sources */,
 				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
+				304FE150293401ED00698BFC /* RenderingEngine.metal in Sources */,
+				3031F9B8293563400090E5A7 /* Shared.metal in Sources */,
 				30A3BE642919BEE900092548 /* BasicScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,6 +496,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RayMarching/RayMarching.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RayMarching/Preview Content\"";
@@ -520,6 +535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RayMarching/RayMarching.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RayMarching/Preview Content\"";

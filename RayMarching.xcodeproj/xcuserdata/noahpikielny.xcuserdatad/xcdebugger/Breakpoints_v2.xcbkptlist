@@ -3,22 +3,4 @@
    uuid = "E4CF85C1-D4F6-4470-957E-8B4AD2A491D2"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "985B9556-102F-41E0-AB21-9C8B8819445E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RayMarching/Rendering/RayMarching3D.metal"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "rayMarch3D(uint2 tid [[thread_position_in_grid]], constant float4x4 * matrices, constant Object * objects, constant int &amp; objectCount, constant Material * materials, constant int &amp; maxIterations, texture2d&lt;float, access::write&gt; out)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>

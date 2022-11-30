@@ -25,56 +25,84 @@ struct RenderingEngine: Screen {
     
     @State var cached = Float3.zero
     
-    let iterations: UnsafeMutablePointer<Int32>
+    let time: UnsafeMutablePointer<Float>
+    
+    let precisionPointer: UnsafeMutablePointer<Float>
+    @Binding var precision: Float
+    
+    @State var needsUpdating = true
     
     init(commandQueue: MTLCommandQueue?) {
         self.commandQueue = commandQueue
         view = MTKViewRepresentable(
-            frame: CGRect(x: 0, y: 0, width: 1024, height: 1024),
+            frame: CGRect(x: 0, y: 0, width: 2048, height: 2048),
             device: commandQueue?.device
         )
         
-        let iterationCount = UnsafeMutablePointer<Int32>.allocate(capacity: 1)
-        iterationCount.pointee = 100
-        self.iterations = iterationCount
+        let _precision = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+        _precision.pointee = 0.1
+        self.precisionPointer = _precision
+        self._precision = Binding(get: {
+            1 / _precision.pointee
+        }, set: { newValue in
+            _precision.pointee = 1 / newValue
+        })
         
-        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .private, usage: [.shaderRead, .shaderWrite])
+        let _time = UnsafeMutablePointer<Float>.allocate(capacity: 1)
+        _time.pointee = 0
+        time = _time
+        
+        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .private, usage:  [.shaderRead, .shaderWrite])
         
         let matricesPtr = UnsafeMutablePointer<float4x4>.allocate(capacity: 2)
         matrices = matricesPtr
-        let camera = Camera()
+        let camera = Camera(position: SIMD3<Float>(0, 1, -50))
         
         matricesPtr.pointee = camera.makeModelMatrix()
         matricesPtr.successor().pointee = camera.makeProjectionMatrix()
         
         self._camera = State(initialValue: camera)
-        let scene = Scene3D.testingScene()
         
         operation = RenderOperation(presents: true) {
             ComputePass(
                 texture: texture,
                 pipelines: [
                     try! ComputeShader(
-                        name: "rayMarch3D",
+                        name: "realisticScene",
                         textures: [texture],
                         buffers: [
                             Buffer(constantPointer: matricesPtr, count: 2),
-                            Buffer(mutable: scene.objects),
-                            Buffer(constant: scene.objects.count),
-                            Buffer(mutable: scene.materials),
-                            Buffer(constantPointer: iterationCount, count: 1)
+                            Buffer(constantPointer: _precision, count: 1),
+                            Buffer(constantPointer: _time, count: 1)
                         ],
                         threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
                     )
                 ]
             )
-            
+//            ComputePass(
+//                texture: texture,
+//                pipelines: [
+//                    try! ComputeShader(
+//                        name: "rayMarch3D",
+//                        textures: [texture],
+//                        buffers: [
+//                            Buffer(constantPointer: matricesPtr, count: 2),
+//                            Buffer(mutable: scene.objects),
+//                            Buffer(constant: scene.objects.count),
+//                            Buffer(mutable: scene.materials),
+//                            Buffer(constant: Float(0.001)),
+//                            Buffer(constantPointer: iterationCount, count: 1)
+//                        ],
+//                        threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
+//                    )
+//                ]
+//            )
+//
             RenderShader.default(texture: texture)
         }
     }
     
-    func mutateState(publisher: Timer) {
-//        NSLog("Update")
+    func mutateState() {
         matrices.pointee = camera.makeModelMatrix(with: moving ? cached : .zero)
         matrices.successor().pointee = camera.makeProjectionMatrix(with: moving ? .zero : cached)
     }
@@ -103,11 +131,13 @@ struct RenderingEngine: Screen {
     }
     
     var body: some View {
-        contents.onAppear {
-            let _ = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { timer in
-                mutateState(publisher: timer)
+        contents.onReceive(timer) { t in
+//            if needsUpdating {
+                mutateState()
+                needsUpdating = false
                 draw()
-            }
+            time.pointee += Float(0.01)
+//            }
         }
     }
     
@@ -115,7 +145,7 @@ struct RenderingEngine: Screen {
         guard let commandQueue,
               let drawable = view.currentDrawable,
               let descriptor = view.currentRenderPassDescriptor else {
-            print("[RenderError] unable to fetch resources for draw call")
+            NSLog("[RenderError] unable to fetch resources for draw call")
             return
         }
         
@@ -125,7 +155,8 @@ struct RenderingEngine: Screen {
     }
     
     func handleDrag(drag: CGSize, size: CGSize) {
-        let drag = Float3(
+        needsUpdating = true
+        let drag = -Float3(
             Float(drag.height / size.height),
             Float(drag.width / size.width),
             0
@@ -162,11 +193,7 @@ struct RenderingEngine: Screen {
             }
             Spacer()
             VStack {
-                slider(value: Binding<Float>.init(get: {
-                    Float(iterations.pointee)
-                }, set: { newValue in
-                    iterations.pointee = Int32(newValue)
-                }), in: 1...300, name: "Max Iterations")
+                slider(value: $precision, in: 1...300, name: "Iterations")
 //                slider(value: $camera.position.x, name: "x")
 //                slider(value: $camera.position.y, name: "y")
 //                slider(value: $camera.position.z, name: "z")
@@ -174,11 +201,13 @@ struct RenderingEngine: Screen {
         }.padding(.top, 30)
     }
     
-    private func slider<T: BinaryFloatingPoint>(value: Binding<T>, in range: ClosedRange<T>, name: String) -> some View where T.Stride: BinaryFloatingPoint {
+    private func slider<T: BinaryFloatingPoint>(value: Binding<T>, in range: ClosedRange<T>, display: Text? = nil, name: String) -> some View where T.Stride: BinaryFloatingPoint {
         HStack {
             Slider(value: value, in: range) { Text("\(name): ") }
                 .frame(maxWidth: 200)
-//            Text("\(value)")
+            if let display {
+                display
+            }
         }
     }
 }

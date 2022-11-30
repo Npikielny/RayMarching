@@ -18,6 +18,7 @@ struct Object: GPUEncodable {
     var material: Int32
     
     enum ObjectType: Int32 {
+        case water = -2
         case plane = -1
         case sphere = 0
         case box = 1
@@ -31,12 +32,16 @@ struct Object: GPUEncodable {
         self.material = material
     }
     
-    static func sphere(position: Float3, rotation: Float3, scale: Float3, material: Int32) -> Self {
-        Object(type: .sphere, position: position, rotation: rotation, scale: scale, material: material)
+    static func sphere(position: Float3, rotation: Float3, scale: Float, material: Int32) -> Self {
+        Object(type: .sphere, position: position, rotation: rotation, scale: Float3(repeating: scale), material: material)
     }
     
     static func plane(position: Float3, rotation: Float3, scale: Float3, material: Int32) -> Self {
         Object(type: .plane, position: position, rotation: rotation, scale: scale, material: material)
+    }
+    
+    static func water(position: Float3, rotation: Float3, scale: Float3, material: Int32) -> Self {
+        Object(type: .water, position: position, rotation: rotation, scale: scale, material: material)
     }
     
     static func box(position: Float3, rotation: Float3, scale: Float3, material: Int32) -> Self {

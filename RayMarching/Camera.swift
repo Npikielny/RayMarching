@@ -9,40 +9,35 @@ import SceneKit
 import ShaderKit
 
 struct Camera {
-    var fov: Float = 45
+    var fov: Float = Float.pi / 3
     var aspectRatio: Float = 1
-    var position = SIMD3<Float>(0, 1, 0)
+    var position = SIMD3<Float>(0, 1, -5)
     var rotation = SIMD3<Float>.zero
     
+    init(fov: Float = Float.pi / 3, aspectRatio: Float = 1, position: SIMD3<Float> = SIMD3<Float>(0, 1, -5), rotation: SIMD3<Float> = SIMD3<Float>.zero) {
+        self.fov = fov
+        self.aspectRatio = aspectRatio
+        self.position = position
+        self.rotation = rotation
+    }
+    
+    func wrap(_ s: SIMD3<Float>) -> SIMD4<Float> {
+        SIMD4<Float>(s, 1)
+    }
+    
     func makeProjectionMatrix(with cachedRotation: SIMD3<Float> = SIMD3<Float>.zero) -> float4x4 {
-        let  n:Float = 0.3
-        let  f:Float = 1000
-
-        let  r = tan(-fov / 180*Float.pi / 2)
-        let  l = tan(fov / 180*Float.pi / 2)
-
-        let  t = tan(fov / 180 * Float.pi / 2) * aspectRatio
-        let  b = -1 * tan(fov / 180 * Float.pi / 2) * aspectRatio
-
-        let X = 2 * n / (r - l)
-        let Y = 2 * n / (t - b)
-
-        let A = (r + l) / (r - l)
-        let B = (t + b) / (t - b)
-        let C = -1 * (f + n) / (f - n)
-        let D = -2 * f * n / (f - n)
-        let E: Float = -1
-
-        let column0 = SIMD4(X, 0, 0, 0)
-        let column1 = SIMD4(0, Y, 0, 0)
-        let column2 = SIMD4(A, B, C, E)
-        let column3 = SIMD4(0, 0, D, 0)
-        var matrix = float4x4(column0, column1, column2, column3)
         let rotationMatrixX = float4x4(simd_quatf(angle: rotation.x + cachedRotation.x, axis: SIMD3<Float>(1, 0, 0)))
         let rotationMatrixY = float4x4(simd_quatf(angle: rotation.y + cachedRotation.y, axis: SIMD3<Float>(0, 1, 0)))
         let rotationMatrixZ = float4x4(simd_quatf(angle: rotation.z + cachedRotation.z, axis: SIMD3<Float>(0, 0, 1)))
-        matrix *= rotationMatrixX * rotationMatrixY * rotationMatrixZ
-        return matrix.inverse
+        
+        let rotation = rotationMatrixZ * rotationMatrixY * rotationMatrixX
+        
+        let forward = SIMD4<Float>(0, 0, 1, 1)
+        let up = SIMD4<Float>(0, 1, 0, 0) * sin(fov)
+        let right = SIMD4<Float>(1, 0, 0, 0) * sin(fov)
+        
+        let matrix = float4x4(right, up, SIMD4<Float>(0, 0, 0, 0), forward)
+        return rotation * matrix
     }
 
     func makeModelMatrix(with cached: SIMD3<Float> = SIMD3<Float>.zero) -> float4x4 {

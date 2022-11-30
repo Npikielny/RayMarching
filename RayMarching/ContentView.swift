@@ -23,23 +23,25 @@ struct ContentView: View {
     
     
     var body: some View {
-        switch screen {
-            case .some(.rayMarch2D):
-                embed(RayMarch2D(commandQueue: Self.commandQueue))
-            case .some(.rayMarch3D):
-                embed(RayMarch3D(commandQueue: Self.commandQueue))
-            case .some(.renderingEngine):
-                embed(RenderingEngine(commandQueue: Self.commandQueue))
-            default:
-                VStack {
-                    Text("Renderers")
-                    List(Screens.allCases, id: \.rawValue) { screen in
-                        Button(screen.rawValue) {
-                            self.screen = screen
-                        }
+        if let screen {
+            switch screen {
+                case .rayMarch2D:
+                    embed(RayMarch2D(commandQueue: Self.commandQueue))
+                case .rayMarch3D:
+                    embed(RayMarch3D(commandQueue: Self.commandQueue))
+                case .renderingEngine:
+                    embed(RenderingEngine(commandQueue: Self.commandQueue))
+            }
+        } else {
+            VStack {
+                Text("Renderers")
+                List(Screens.allCases, id: \.rawValue) { screen in
+                    Button(screen.rawValue) {
+                        self.screen = screen
                     }
                 }
-                .padding()
+            }
+            .padding()
         }
     }
     

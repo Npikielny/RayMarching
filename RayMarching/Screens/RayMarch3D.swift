@@ -52,7 +52,8 @@ struct RayMarch3D: BasicScreen {
                             Buffer(mutable: scene.objects),
                             Buffer(constant: scene.objects.count),
                             Buffer(mutable: scene.materials),
-                            Buffer(constant: 100)
+                            Buffer(constant: 30), // iterations
+                            Buffer(constant: Float(0.01)) // precision
                         ],
                         threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
                     )
@@ -90,7 +91,6 @@ struct RayMarch3D: BasicScreen {
     }
     
     func mutateState(publisher: Publisher.Output) {
-        print(camera.rotation + cachedRotation)
         matrices.successor().pointee = camera.makeProjectionMatrix(with: cachedRotation)
     }
 }

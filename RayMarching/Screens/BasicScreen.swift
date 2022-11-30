@@ -41,7 +41,7 @@ extension BasicScreen {
         guard let commandQueue,
               let drawable = view.currentDrawable,
               let descriptor = view.currentRenderPassDescriptor else {
-            print("[RenderError] unable to fetch resources for draw call")
+            NSLog("[RenderError] unable to fetch resources for draw call")
             return
         }
         
