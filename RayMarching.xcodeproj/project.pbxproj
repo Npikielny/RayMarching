@@ -26,7 +26,7 @@
 		30D1F63C291591EB00E02064 /* RayMarchingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F63B291591EB00E02064 /* RayMarchingUITests.swift */; };
 		30D1F63E291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F63D291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift */; };
 		30D1F64C2915922200E02064 /* ShaderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 30D1F64B2915922200E02064 /* ShaderKit */; };
-		30D1F64E2915932F00E02064 /* Rendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F64D2915932E00E02064 /* Rendering.metal */; };
+		30D1F64E2915932F00E02064 /* RayMarching2D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F64D2915932E00E02064 /* RayMarching2D.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +71,7 @@
 		30D1F637291591EB00E02064 /* RayMarchingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RayMarchingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30D1F63B291591EB00E02064 /* RayMarchingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingUITests.swift; sourceTree = "<group>"; };
 		30D1F63D291591EB00E02064 /* RayMarchingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RayMarchingUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		30D1F64D2915932E00E02064 /* Rendering.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Rendering.metal; sourceTree = "<group>"; };
+		30D1F64D2915932E00E02064 /* RayMarching2D.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RayMarching2D.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +112,7 @@
 		30A3BE5D2919BE2200092548 /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
-				30D1F64D2915932E00E02064 /* Rendering.metal */,
+				30D1F64D2915932E00E02064 /* RayMarching2D.metal */,
 				30187F41293405D100E5A189 /* Shared.h */,
 				3031F9B7293563400090E5A7 /* Shared.metal */,
 				304FE14F293401ED00698BFC /* RenderingEngine.metal */,
@@ -341,7 +341,7 @@
 				30C24BF62919784700082561 /* Scene.swift in Sources */,
 				30C24BF82919784700082561 /* RayMarching3D.metal in Sources */,
 				30A3BE602919BED400092548 /* RayMarch2D.swift in Sources */,
-				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
+				30D1F64E2915932F00E02064 /* RayMarching2D.metal in Sources */,
 				304FE150293401ED00698BFC /* RenderingEngine.metal in Sources */,
 				3031F9B8293563400090E5A7 /* Shared.metal in Sources */,
 				30A3BE642919BEE900092548 /* BasicScreen.swift in Sources */,
