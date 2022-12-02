@@ -16,7 +16,7 @@ struct RenderingEngine: Screen {
     
     let view: MTKViewRepresentable
     
-    let timer = Timer.publish(every: 2 , on: .main, in: .default).autoconnect()
+    let timer = Timer.publish(every: 1 / 10, on: .main, in: .default).autoconnect()
     
     let operation: ShaderKit.PresentingOperation
     
@@ -37,12 +37,12 @@ struct RenderingEngine: Screen {
     init(commandQueue: MTLCommandQueue?) {
         self.commandQueue = commandQueue
         view = MTKViewRepresentable(
-            frame: CGRect(x: 0, y: 0, width: 2048, height: 2048),
+            frame: CGRect(x: 0, y: 0, width: 512, height: 512),
             device: commandQueue?.device
         )
         
         let _precision = UnsafeMutablePointer<Float>.allocate(capacity: 1)
-        _precision.pointee = 0.01
+        _precision.pointee = 0.1
         self.precisionPointer = _precision
         self._precision = Binding(get: {
             1 / _precision.pointee
@@ -54,7 +54,7 @@ struct RenderingEngine: Screen {
         _time.pointee = 0
         time = _time
         
-        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 1024, height: 512, storageMode: .managed, usage:  [.shaderRead, .shaderWrite])
+        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .managed, usage:  [.shaderRead, .shaderWrite])
         
         let matricesPtr = UnsafeMutablePointer<float4x4>.allocate(capacity: 2)
         matrices = matricesPtr
@@ -105,10 +105,11 @@ struct RenderingEngine: Screen {
 //
             RenderShader.default(texture: texture)
             
-        } + Execute { device in
-            try await WriteOperation(texture: texture, to: "/Users/noahpikielny/Desktop/Results/r_\(iterPtr.pointee).tiff").execute(commandQueue: commandQueue!)
-            iterPtr.pointee += 1
         }
+//        + Execute { device in
+//            try await WriteOperation(texture: texture, to: <Insert path \(iterPtr.pointee)>.tiff).execute(commandQueue: commandQueue!)
+//            iterPtr.pointee += 1
+//        }
     }
     
     func mutateState() {

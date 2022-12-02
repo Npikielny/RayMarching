@@ -28,6 +28,7 @@
 		30D1F64C2915922200E02064 /* ShaderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 30D1F64B2915922200E02064 /* ShaderKit */; };
 		30D1F64E2915932F00E02064 /* Rendering.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F64D2915932E00E02064 /* Rendering.metal */; };
 		30D73ACC2937CC2A00F93968 /* NoiseMap.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D73ACB2937CC2A00F93968 /* NoiseMap.metal */; };
+		30D1F64E2915932F00E02064 /* RayMarching2D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D1F64D2915932E00E02064 /* RayMarching2D.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		30D1F64D2915932E00E02064 /* Rendering.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Rendering.metal; sourceTree = "<group>"; };
 		30D73ACA2937CBE400F93968 /* NoiseMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoiseMap.h; sourceTree = "<group>"; };
 		30D73ACB2937CC2A00F93968 /* NoiseMap.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = NoiseMap.metal; sourceTree = "<group>"; };
+		30D1F64D2915932E00E02064 /* RayMarching2D.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = RayMarching2D.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +117,7 @@
 		30A3BE5D2919BE2200092548 /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
-				30D1F64D2915932E00E02064 /* Rendering.metal */,
+				30D1F64D2915932E00E02064 /* RayMarching2D.metal */,
 				30187F41293405D100E5A189 /* Shared.h */,
 				3031F9B7293563400090E5A7 /* Shared.metal */,
 				304FE14F293401ED00698BFC /* RenderingEngine.metal */,
@@ -348,6 +350,7 @@
 				30A3BE602919BED400092548 /* RayMarch2D.swift in Sources */,
 				30D1F64E2915932F00E02064 /* Rendering.metal in Sources */,
 				30D73ACC2937CC2A00F93968 /* NoiseMap.metal in Sources */,
+				30D1F64E2915932F00E02064 /* RayMarching2D.metal in Sources */,
 				304FE150293401ED00698BFC /* RenderingEngine.metal in Sources */,
 				3031F9B8293563400090E5A7 /* Shared.metal in Sources */,
 				30A3BE642919BEE900092548 /* BasicScreen.swift in Sources */,

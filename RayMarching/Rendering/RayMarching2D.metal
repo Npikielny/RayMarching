@@ -8,27 +8,10 @@
 #include <metal_stdlib>
 using namespace metal;
 #include "Shared.h"
-
-enum Eye {
-    left,
-    right,
-    none
-};
+#include "SDF.h"
 
 float2 flipUV(float2 in) {
     return float2(in.x, 1 - in.y);
-}
-
-[[vertex]]
-Vert eyeVert(uint vid [[vertex_id]],
-             constant int & eye) {
-    Vert vert;
-    float2 textureVert = verts[vid];
-    
-    vert.position = float4(textureVert.x * 0.5, textureVert.y, 0, 1);
-    vert.uv = textureVert * 0.5 + 0.5;
-    vert.uv = flipUV(vert.uv);
-    return vert;
 }
 
 [[vertex]]
@@ -44,14 +27,12 @@ Vert imageVert(uint vid [[vertex_id]]) {
 constexpr metal::sampler sam(metal::min_filter::nearest, metal::mag_filter::nearest, metal::mip_filter::none);
 
 constant float2 conversion = float2(60.f / 360.f, 60.f / 180.f);
-//constant float2 offset = float2(0.2, 0);
 [[fragment]]
 float4 renderImages(Vert vert [[stage_in]],
                     texture2d<float> image,
                     constant float * angles,
                     constant int & eye) {
     float angle = angles[0];
-    
     
     float2 uv = float2x2(
                          cos(angle), -sin(angle),
@@ -70,40 +51,6 @@ float4 renderImages(Vert vert [[stage_in]],
     return float4(color.x, color.y, color.z, color.w);
 }
 
-/**
-* Title: Fish Eye Shader
-* Author: JEGX
-* Access Date: 10/17/2022
-* Availability: https://www.geeks3d.com/glslhacker/cs/
-*/
-[[fragment]]
-float4 applyFisheye(Vert vert [[stage_in]],
-                    texture2d<float>image) {
-    float aperture = 178.0;
-    float apertureHalf = 0.5 * aperture * (M_PI_F / 180.0);
-    float maxFactor = sin(apertureHalf);
-    
-    float2 uv;
-    float2 xy = 2.0 * vert.uv - 1.0;
-    
-    float d = length(xy);
-    
-    if (d < 2.0-maxFactor) {
-        d = length(xy * maxFactor);
-        float z = sqrt(1.0 - d * d);
-        float r = atan2(d, z) / M_PI_F;
-        float phi = atan2(xy.y, xy.x);
-        
-        uv.x = r * cos(phi) + 0.5;
-        uv.y = r * sin(phi) + 0.5;
-    }
-    else {
-        uv = vert.uv.xy;
-    }
-
-    return image.sample(sam, uv);
-}
-
 struct Sphere {
     float4 position;
     float3 color;
@@ -111,6 +58,7 @@ struct Sphere {
 
 struct Square {
     float3 position;
+    float sideLength;
 };
 
 struct Circle {
@@ -129,12 +77,39 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
     
     float2 cameraPosition = float2(float(out.get_width()) / 2, float(out.get_height()) / 2);
     
-    float2 circlePosition = float2(float(out.get_width()) / 4, float(out.get_height()) / 4);
-    float circleRadius = 20;
     
-    Circle circle;
-    circle.position = circlePosition;
-    circle.radius = circleRadius;
+    float2 circle1Position = float2(float(out.get_width()) / 4, float(out.get_height()) / 4);
+    float circle1Radius = 20;
+    
+    Circle circle1;
+    circle1.position = circle1Position;
+    circle1.radius = circle1Radius;
+    
+    float2 circle2Position = float2(float(out.get_width()) / 4, float(out.get_height()) * 3 / 4);
+    float circle2Radius = 20;
+    Circle circle2;
+    circle2.position = circle2Position;
+    circle2.radius = circle2Radius;
+    
+    float2 circle3Position = float2(float(out.get_width()) * 3 / 4, float(out.get_height()) / 4);
+    float circle3Radius = 20;
+    Circle circle3;
+    circle3.position = circle3Position;
+    circle3.radius = circle3Radius;
+    
+    float2 circle4Position = float2(float(out.get_width()) * 3 / 4, float(out.get_height()) * 3 / 4);
+    float circle4Radius = 20;
+    Circle circle4;
+    circle4.position = circle4Position;
+    circle4.radius = circle4Radius;
+    
+    float2 circle5Position = float2(float(out.get_width()) / 4, float(out.get_height()) / 2);
+    float circle5Radius = 20;
+    Circle circle5;
+    circle5.position = circle5Position;
+    circle5.radius = circle5Radius;
+    
+    Circle circles[5] = {circle1, circle2, circle3, circle4, circle5};
     
     float dist = distance(float2(tid), cameraPosition);
     if (dist < 4) {
@@ -142,17 +117,25 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
         return;
     }
     
-    //    int maxIteration = 10;
     
-    if (getDistance(float2(tid), circle) <= 0) {
-        out.write(float4(1,0,0,1), tid);
-        return;
+    for (int i = 0; i < 5; i++) {
+        if (getDistance(float2(tid), circles[i]) <= 0) {
+            out.write(float4(1,0,0,1), tid);
+            return;
+        }
     }
+    
+//    sdf = sceneDistance(objects, objectCount, ray);
     
     float2 marchDirection = float2(cos(angle), sin(angle));
     
     for (int i = 0; i < 5; i++) {
-        float cameraToCircle = getDistance(cameraPosition, circle);
+//        float cameraToCircle = getDistance(cameraPosition, circles[i]);
+        
+        float cameraToCircle = 1000;
+        for (int i = 0; i < 5; i++) {
+            cameraToCircle = min(cameraToCircle, getDistance(cameraPosition, circles[i]));
+        }
         Circle step;
         step.position = cameraPosition;
         step.radius = cameraToCircle;
@@ -170,27 +153,6 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
         }
     }
     out.write(float4(float3(0), 1), tid);
-    
-//    if (getDistance(float2(tid), newStep) <= 0 && getDistance(float2(tid), newStep) >= -1) {
-//        out.write(float4(0,0,1,1), tid);
-//        return;
-//    }
-    
-//    while (maxIteration > 0) {
-//        getIntersection(cameraPosition, circle);
-//        maxIteration--;
-//    }
-    
-//    else {
-//        out.write(float4(0), tid);
-//    }
-    
-//
-//    Sphere sphere;
-//    sphere.position = float4(0, 0, 10, 1);
-//    sphere.color = float3(1, 0, 0);
-//
-//    out.write(in.read(tid), tid);
 }
 
 [[fragment]]

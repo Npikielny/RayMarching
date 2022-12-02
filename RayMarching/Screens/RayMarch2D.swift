@@ -64,7 +64,6 @@ struct RayMarch2D: BasicScreen {
                 Text("\(rate)")
             }
         }
-        
     }
 }
 
