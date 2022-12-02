@@ -118,7 +118,7 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
     }
     
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 2; i < 5; i++) {
         if (getDistance(float2(tid), circles[i]) <= 0) {
             out.write(float4(1,0,0,1), tid);
             return;
@@ -129,11 +129,11 @@ void rayMarch2D(uint2 tid [[thread_position_in_grid]],
     
     float2 marchDirection = float2(cos(angle), sin(angle));
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
 //        float cameraToCircle = getDistance(cameraPosition, circles[i]);
         
         float cameraToCircle = 1000;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 2; i < 5; i++) {
             cameraToCircle = min(cameraToCircle, getDistance(cameraPosition, circles[i]));
         }
         Circle step;
