@@ -16,7 +16,7 @@ struct RenderingEngine: Screen {
     
     let view: MTKViewRepresentable
     
-    let timer = Timer.publish(every: 1 / 60, on: .main, in: .default).autoconnect()
+    let timer = Timer.publish(every: 1 / 10, on: .main, in: .default).autoconnect()
     
     let operation: ShaderKit.PresentingOperation
     
@@ -32,10 +32,12 @@ struct RenderingEngine: Screen {
     
     @State var needsUpdating = true
     
+    let date = Date()
+    
     init(commandQueue: MTLCommandQueue?) {
         self.commandQueue = commandQueue
         view = MTKViewRepresentable(
-            frame: CGRect(x: 0, y: 0, width: 2048, height: 2048),
+            frame: CGRect(x: 0, y: 0, width: 512, height: 512),
             device: commandQueue?.device
         )
         
@@ -52,16 +54,19 @@ struct RenderingEngine: Screen {
         _time.pointee = 0
         time = _time
         
-        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .private, usage:  [.shaderRead, .shaderWrite])
+        let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .managed, usage:  [.shaderRead, .shaderWrite])
         
         let matricesPtr = UnsafeMutablePointer<float4x4>.allocate(capacity: 2)
         matrices = matricesPtr
-        let camera = Camera(position: SIMD3<Float>(0, 1, -50))
+        let camera = Camera(fov: Float.pi / 2, position: SIMD3<Float>(-50, 1, -50), rotation: SIMD3<Float>(0, Float.pi / 4, 0))
         
         matricesPtr.pointee = camera.makeModelMatrix()
         matricesPtr.successor().pointee = camera.makeProjectionMatrix()
         
         self._camera = State(initialValue: camera)
+        
+        let iterPtr = UnsafeMutablePointer<Int>.allocate(capacity: 1)
+        iterPtr.pointee = 0
         
         operation = RenderOperation(presents: true) {
             ComputePass(
@@ -99,7 +104,12 @@ struct RenderingEngine: Screen {
 //            )
 //
             RenderShader.default(texture: texture)
+            
         }
+//        + Execute { device in
+//            try await WriteOperation(texture: texture, to: <Insert path \(iterPtr.pointee)>.tiff).execute(commandQueue: commandQueue!)
+//            iterPtr.pointee += 1
+//        }
     }
     
     func mutateState() {
@@ -136,7 +146,7 @@ struct RenderingEngine: Screen {
                 mutateState()
                 needsUpdating = false
                 draw()
-            time.pointee += Float(0.01)
+            time.pointee += 1 / 60//Float(self.date.timeIntervalSinceNow)
 //            }
         }
     }
