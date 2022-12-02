@@ -51,14 +51,10 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
         ray.origin += ray.direction * sdf.distance;
         sdf = sceneDistance(objects, objectCount, ray);
         if (sdf.distance < precision) {
-//            out.write(float4(materials[sdf.object.material].diffuse, 1), tid);
             out.write(float4(shade(sdf, materials[sdf.object.material], ray, lightDirection, precision), 1), tid);
             return;
         }
     }
     
-//    return out.write(float4(skyColor(ray, lightDirection), 1), tid);
     return out.write(float4(groundPlane(ray, float3(1, 1, 1), lightDirection), 1), tid);
-//    out.write(float4(materials[sdf.object.material].diffuse, 1), tid);
-//    return;
 }

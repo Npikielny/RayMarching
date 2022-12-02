@@ -181,24 +181,6 @@ SDFRecord sdf(Ray parent, float maxT, float precision, float time) {
     return SDFRecord();
 }
 
-
-
-
-
-//float terrainSDF(Ray ray, float minT, float maxT, )
-
-//
-//float3 sceneNormal(Ray ray, float precision) {
-//    ray.origin -= ray.direction * precision;
-//    return -metal::normalize(
-//                             float3(
-//                                    derivative(ray, float3(1, 0, 0), precision),
-//                                    derivative(ray, float3(0, 1, 0), precision),
-//                                    derivative(ray, float3(0, 0, 1), precision)
-//                                    )
-//                             );
-//}
-
 float3 environment(float3 direction, float3 p, float time, float3 lightDirection) {
     float3 sky = float3(0.3,0.5,0.85) - direction.y * direction.y * 0.5;
     sky = mix(sky, 0.85 * float3(0.7, 0.75, 0.85), pow(1.0 - max(direction.y, 0.0), 4.0));
@@ -233,7 +215,6 @@ void realisticScene(uint2 tid [[thread_position_in_grid]],
     
     float maxDistance = 150;
     
-//    float3 lightDirection = normalize(float3(1, -0.25, -0.25));
     float3 lightDirection = normalize(float3(sin(time), -0.25, cos(time)));
     
     SDFRecord r = sdf(ray, maxDistance, precision, time);
