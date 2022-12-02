@@ -32,9 +32,9 @@ struct Camera {
         
         let rotation = rotationMatrixZ * rotationMatrixY * rotationMatrixX
         
-        let forward = SIMD4<Float>(0, 0, 1, 1)
-        let up = SIMD4<Float>(0, 1, 0, 0) * sin(fov)
-        let right = SIMD4<Float>(1, 0, 0, 0) * sin(fov)
+        let forward = SIMD4<Float>(0, 0, 1, 1) * cos(fov / 2)
+        let up = SIMD4<Float>(0, 1, 0, 0) * sin(fov / 2)
+        let right = SIMD4<Float>(1, 0, 0, 0) * sin(fov / 2)
         
         let matrix = float4x4(right, up, SIMD4<Float>(0, 0, 0, 0), forward)
         return rotation * matrix

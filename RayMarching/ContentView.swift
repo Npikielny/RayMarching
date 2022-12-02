@@ -18,7 +18,32 @@ struct ContentView: View {
     enum Screens: String, CaseIterable {
         case rayMarch2D = "2D Illustration of Ray Marching"
         case rayMarch3D = "3D Ray Marching"
-        case renderingEngine = "Rendering Environment"
+        case renderingEngine = "Island Scene"
+        
+        var image: Image {
+            switch self {
+                case .rayMarch2D: return Image("Ray Marching 2D")
+                case .rayMarch3D: return Image("Ray Marching 3D")
+                case .renderingEngine: return Image("Island")
+            }
+        }
+        
+        var description: String {
+            switch self {
+                case .rayMarch2D:
+                    return """
+2D Visualization of an SDF ray marching algorithm
+"""
+                case .rayMarch3D:
+                    return """
+A fully fledged 3D ray marching engine with Lambertian shading that can render planes, spheres, and boxes.
+"""
+                case .renderingEngine:
+                    return """
+An artistic use of ray marching to render a procedural island with water and sky.
+"""
+            }
+        }
     }
     
     
@@ -36,8 +61,16 @@ struct ContentView: View {
             VStack {
                 Text("Renderers")
                 List(Screens.allCases, id: \.rawValue) { screen in
-                    Button(screen.rawValue) {
-                        self.screen = screen
+                    VStack {
+                        Text(screen.description)
+                        screen.image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 200)
+                        Button(screen.rawValue) {
+                            self.screen = screen
+                        }
+                        Divider()
                     }
                 }
             }

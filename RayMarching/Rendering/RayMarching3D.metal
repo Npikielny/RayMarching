@@ -11,15 +11,15 @@ using namespace metal;
 
 //constant float3 lightDirection = -normalize(float3(1));
 
-//float3 groundPlane(Ray ray, float3 groundColor, float3 observer, float3 lightDirection) {
-//    if (ray.direction.y < 0) {
-//        float t = (-ray.origin.y / ray.direction.y);
-//        float3 loc = t * ray.direction + ray.origin;
-//        int3 l = int3(loc);
-//        return 0.15 + float(abs((l.x + l.z) % 2)) * 0.05 * max(dot(float3(0, 1, 0), -lightDirection), 0.f);
-//    }
-//    return skyColor(ray, lightDirection);
-//}
+float3 groundPlane(Ray ray, float3 groundColor, float3 lightDirection) {
+    if (ray.direction.y < 0) {
+        float t = (-ray.origin.y / ray.direction.y);
+        float3 loc = t * ray.direction + ray.origin;
+        int3 l = int3(loc);
+        return 0.15 + float(abs((l.x + l.z) % 2)) * 0.05 * max(dot(float3(0, 1, 0), -lightDirection), 0.f);
+    }
+    return skyColor(ray, lightDirection);
+}
 
 //void writeGroundPlane(uint2 tid, texture2d<float, access::write> image, Ray ray, float3 groundColor, float3 observer, float3 lightDirection) {
 //    image.write(float4(groundPlane(ray, groundColor, observer, lightDirection), 1), tid);
@@ -56,8 +56,9 @@ void rayMarch3D(uint2 tid [[thread_position_in_grid]],
             return;
         }
     }
-//    return writeGroundPlane(tid, out, ray, groundColor, observer, lightDirection);
-    out.write(float4(float3(0), 1), tid);
+    
+//    return out.write(float4(skyColor(ray, lightDirection), 1), tid);
+    return out.write(float4(groundPlane(ray, float3(1, 1, 1), lightDirection), 1), tid);
 //    out.write(float4(materials[sdf.object.material].diffuse, 1), tid);
-    return;
+//    return;
 }

@@ -84,25 +84,6 @@ struct RenderingEngine: Screen {
                     )
                 ]
             )
-//            ComputePass(
-//                texture: texture,
-//                pipelines: [
-//                    try! ComputeShader(
-//                        name: "rayMarch3D",
-//                        textures: [texture],
-//                        buffers: [
-//                            Buffer(constantPointer: matricesPtr, count: 2),
-//                            Buffer(mutable: scene.objects),
-//                            Buffer(constant: scene.objects.count),
-//                            Buffer(mutable: scene.materials),
-//                            Buffer(constant: Float(0.001)),
-//                            Buffer(constantPointer: iterationCount, count: 1)
-//                        ],
-//                        threadGroupSize: MTLSize(width: 8, height: 8, depth: 1)
-//                    )
-//                ]
-//            )
-//
             RenderShader.default(texture: texture)
             
         }

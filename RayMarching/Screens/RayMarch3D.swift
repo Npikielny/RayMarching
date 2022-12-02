@@ -30,7 +30,7 @@ struct RayMarch3D: BasicScreen {
         
         let texture = Texture.newTexture(pixelFormat: .bgra8Unorm, width: 512, height: 512, storageMode: .private, usage: [.shaderRead, .shaderWrite])
         
-        let camera = Camera()
+        let camera = Camera(fov: Float.pi / 2)
         self._cachedRotation = State(initialValue: camera.rotation)
         self._camera = State(initialValue: camera)
         let matricesPtr = UnsafeMutablePointer<float4x4>.allocate(capacity: 2)
@@ -38,7 +38,7 @@ struct RayMarch3D: BasicScreen {
         matricesPtr.pointee = camera.makeModelMatrix()
         matricesPtr.successor().pointee = camera.makeProjectionMatrix()
         
-        let scene = Scene3D.randomScene(objectCount: 50)
+        let scene = Scene3D.testingScene()
         
         self.operation = RenderOperation(presents: true) {
             ComputePass(

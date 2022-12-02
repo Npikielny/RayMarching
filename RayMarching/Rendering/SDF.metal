@@ -49,53 +49,13 @@ float waterHeight(float3 position) {
 //    return metal::sin(p.x) * metal::sin(p.z) * 3 - 3;
 }
 
-float2 raymarchTerrain(float3 ro, float3 rd, float tmin, float tmax )
-{
-    // bounding plane
-    float tp = (3-ro.y)/rd.y;
-    if( tp>0.0 ) tmax = metal::min( tmax, tp );
-    
-    // raymarch
-    float dis, th;
-    float t2 = -1.0;
-    float t = tmin;
-    float ot = t;
-    float odis = 0.0;
-    float odis2 = 0.0;
-    for( int i=0; i<400; i++ )
-    {
-        th = 0.001*t;
-
-        float3 pos = ro + t*rd;
-        float3 env = waterHeight(pos);
-        float hei = env.x;
-
-        // tree envelope
-        
-        // terrain
-        dis = pos.y - hei;
-        if( dis<th ) break;
-        
-        ot = t;
-        odis = dis;
-        t += dis*0.8*(1.0-0.75*env.y); // slow down in step areas
-        if( t>tmax ) break;
-    }
-
-    if( t>tmax ) t = -1.0;
-    else t = ot + (th-odis)*(t-ot)/(dis-odis); // linear interpolation for better accuracy
-    
-    return float2(t,t2);
-}
-
 float waterDistance(Ray ray) {
-    return raymarchTerrain(ray.origin, ray.direction, 0, INFINITY).x * 0.85;
-//    float dist = ray.origin.y - waterHeight(ray.origin);
-//    if (dist > 1) {
-//        return dist * 0.8;
-//    } else {
-//        return dist * 0.1;
-//    }
+    float dist = ray.origin.y - waterHeight(ray.origin);
+    if (dist > 1) {
+        return dist * 0.8;
+    } else {
+        return dist * 0.1;
+    }
 }
 
 float sphereDistance(Object sphere, Ray ray) {
@@ -144,8 +104,8 @@ SDFRecord sceneDistance(constant Object * objects, int objectCount, Ray ray) {
     for (int i = 0; i < objectCount; i++) {
         Object object = objects[i];
         float dist = distanceToObject(object, ray);
-        sdf.object = sdf.distance > dist ? object : sdf.object;
-        sdf.distance = metal::min(sdf.distance, dist);
+        sdf.object = abs(sdf.distance) > dist ? object : sdf.object;
+        sdf.distance = metal::min(abs(sdf.distance), dist);
     }
     
     return sdf;

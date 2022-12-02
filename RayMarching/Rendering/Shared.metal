@@ -36,9 +36,9 @@ T lerp(T a, T b, float p) {
 
 float3 skyColor(Ray ray, float3 lightDirection) {
     float cosPhi = metal::dot(ray.direction, -lightDirection);
-    if (cosPhi > 0.995) {
-        return lerp(float3(1, 0.7, 0.5), float3(1), (cosPhi - 0.995) / 0.005);
-    }
+//    if (cosPhi > 0.995) {
+//        return lerp(float3(1, 0.7, 0.5), float3(1), (cosPhi - 0.995) / 0.005);
+//    }
     
     return lerp(sky, scattering, metal::clamp(cosPhi, 0., 1.));
 }

@@ -253,32 +253,8 @@ void realisticScene(uint2 tid [[thread_position_in_grid]],
         
         return out.write(float4(result * attenuation + (1 - attenuation) * float3(0.25, 0.5, 1), 1), tid);
         
-//        float3 p = ray.origin + ray.direction * r.t;
-        
-//        return out.write(float4(float3((p.y + 5) * 0.5 + 0.5), 1), tid);
-//        return out.write(float4(r.normal * 0.5 + 0.5, 1), tid);
-        
-        
-//        return out.write(float4(color(r.surface, ray.origin + ray.direction * r.t), 1), tid);
-//        return out.write(float4(r.normal * 0.5 + 0.5, 1), tid);
-//        return out.write(1, tid);
     }
     
-//    for (int i = 0; i < maxIterations && abs(distance) < maxDistance; i ++) {
-//        ray.origin += ray.direction * distance;
-//        distance = terrainSDF(ray);
-////        distance = castRay(ray);
-//        if (distance < precision) {
-//            float3 normal = sceneNormal(ray, precision);
-//            return out.write(1 * abs(dot(lightDirection, normal)), tid);
-////            return out.write(float4(1), tid);
-//
-////            out.write(float4(materials[sdf.object.material].diffuse, 1), tid);
-////            return float4(shade(sdf, materials[sdf.object.material], ray, lightDirection), 1);
-//        }
-//    }
-    
-//    return out.write(float4(skyColor(ray, lightDirection), 1), tid);
     return out.write(float4(float3(env), 1), tid);
 }
 
